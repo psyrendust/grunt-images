@@ -9,6 +9,7 @@
 module.exports = function(grunt) {
 
   var exec = require('child_process').exec;
+  var dargs = require('dargs');
 
   var runner = function(buildType) {
 
@@ -176,16 +177,8 @@ module.exports = function(grunt) {
   var convert = function(options, filepath, callback) {
 
     var command = __dirname + '/../compiled/imagemagick/utilities/convert ' + filepath;
-
-    if ( options.resize ) {
-      command += ' -resize ' + options.resize;
-    }
-
-    if ( options.quality ) {
-      command += ' -quality ' + options.quality;
-    }
-
-    command += ' ' + filepath;
+    
+    command += ' ' + dargs(options).join(' ') + ' ' + filepath;
 
     exec( command, function(err) {
       callback(err);
